@@ -17,15 +17,14 @@ cmake_minimum_required ( VERSION 2.8.12 )
 # project
 project ( itw_tagsoup NONE )
 
+set ( ${PROJECT_NAME}_SRCDIR ${OJDKBUILD_DIR}/lookaside/tagsoup )
 set ( ${PROJECT_NAME}_VERSION 1.2.1 )
-set ( ${PROJECT_NAME}_SRCDIR ${CMAKE_CURRENT_LIST_DIR}/../lookaside_tagsoup )
-set ( openjdk_TOOLS ${CMAKE_CURRENT_LIST_DIR}/../tools )
 
 configure_file (
         ${CMAKE_CURRENT_LIST_DIR}/resources/run-ant.bat
         ${CMAKE_CURRENT_BINARY_DIR}/run-ant.bat )
 
-add_custom_target ( ${PROJECT_NAME} ALL
+add_custom_command ( OUTPUT tagsoup.jar
         COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${${PROJECT_NAME}_SRCDIR}
                 ${CMAKE_CURRENT_BINARY_DIR}
@@ -35,3 +34,4 @@ add_custom_target ( ${PROJECT_NAME} ALL
                 tagsoup.jar
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Building tagsoup jar ..." )  
+add_custom_target ( ${PROJECT_NAME} DEPENDS tagsoup.jar )

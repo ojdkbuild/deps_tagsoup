@@ -16,5 +16,6 @@ rem limitations under the License.
 
 @echo on
 
+set JAVA_HOME=${icedtea_web_ITW_JAVA_HOME}
 set CLASSPATH=${CMAKE_CURRENT_LIST_DIR}/BuildRequires/xalan-j2.jar;${CMAKE_CURRENT_LIST_DIR}/BuildRequires/xalan-j2-serializer.jar
 ${openjdk_TOOLS}/ant182/bin/ant -Dtagsoup.version=${${PROJECT_NAME}_VERSION}
