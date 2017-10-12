@@ -25,13 +25,10 @@ configure_file (
         ${CMAKE_CURRENT_BINARY_DIR}/run-ant.bat )
 
 add_custom_command ( OUTPUT tagsoup.jar
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-                ${${PROJECT_NAME}_SRCDIR}
-                ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND (robocopy ${${PROJECT_NAME}_SRCDIR} ${CMAKE_CURRENT_BINARY_DIR} /e ${openjdk_RBCFLAGS} ) ${openjdk_RBCPOSTFIX}
         COMMAND cmd /c run-ant.bat
-        COMMAND ${CMAKE_COMMAND} -E copy
-                dist/lib/tagsoup-${${PROJECT_NAME}_VERSION}.jar
-                tagsoup.jar
+        COMMAND (robocopy dist/lib/ ${CMAKE_CURRENT_BINARY_DIR} tagsoup-${${PROJECT_NAME}_VERSION}.jar ${openjdk_RBCFLAGS} ) ${openjdk_RBCPOSTFIX}
+        COMMAND rename tagsoup-${${PROJECT_NAME}_VERSION}.jar tagsoup.jar
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Building tagsoup jar ..." )  
 add_custom_target ( ${PROJECT_NAME} DEPENDS tagsoup.jar )
