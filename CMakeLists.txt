@@ -32,4 +32,6 @@ add_custom_command ( OUTPUT tagsoup.jar
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Building tagsoup jar ..." )  
 add_custom_target ( ${PROJECT_NAME} DEPENDS tagsoup.jar )
-add_dependencies ( ${PROJECT_NAME} image )
+if ( NOT icedtea_web_ENABLE_STANDALONE )
+    add_dependencies ( ${PROJECT_NAME} image )
+endif ( )
