@@ -24,14 +24,18 @@ configure_file (
         ${CMAKE_CURRENT_LIST_DIR}/resources/run-ant.bat
         ${CMAKE_CURRENT_BINARY_DIR}/run-ant.bat )
 
+add_custom_target ( ${PROJECT_NAME}_build_jdk )
+if ( NOT icedtea_web_ENABLE_STANDALONE )
+    add_dependencies ( ${PROJECT_NAME}_build_jdk image )
+endif ( )
+
 add_custom_command ( OUTPUT tagsoup.jar
         COMMAND (robocopy ${${PROJECT_NAME}_SRCDIR} ${CMAKE_CURRENT_BINARY_DIR} /e /nfl ${openjdk_RBCFLAGS} ) ${openjdk_RBCPOSTFIX}
         COMMAND cmd /c run-ant.bat
         COMMAND (robocopy dist/lib/ ${CMAKE_CURRENT_BINARY_DIR} tagsoup-${${PROJECT_NAME}_VERSION}.jar ${openjdk_RBCFLAGS} ) ${openjdk_RBCPOSTFIX}
         COMMAND rename tagsoup-${${PROJECT_NAME}_VERSION}.jar tagsoup.jar
+        DEPENDS ${PROJECT_NAME}_build_jdk
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Building tagsoup jar ..." )  
+        COMMENT "Building tagsoup jar ..." )
+
 add_custom_target ( ${PROJECT_NAME} DEPENDS tagsoup.jar )
-if ( NOT icedtea_web_ENABLE_STANDALONE )
-    add_dependencies ( ${PROJECT_NAME} image )
-endif ( )
